@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Documentation</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <script>
+      function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(
+            " border-b-2 border-blue-500",
+            ""
+          );
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " border-b-2 border-blue-500";
+      }
+      window.onload = function () {
+        document.getElementsByClassName("tablinks")[0].click();
+      };
+    </script>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <div class="max-w-3xl mx-auto py-10">
+      <h1 class="text-3xl font-bold mb-6 text-center">
+        Token-Mon API Documentation
+      </h1>
+      <div class="mb-4 border-b flex">
+        <button
+          class="tablinks px-4 py-2 focus:outline-none"
+          onclick="openTab(event, 'Overview')"
+        >
+          Overview
+        </button>
+        <button
+          class="tablinks px-4 py-2 focus:outline-none"
+          onclick="openTab(event, 'Endpoints')"
+        >
+          Endpoints
+        </button>
+        <button
+          class="tablinks px-4 py-2 focus:outline-none"
+          onclick="openTab(event, 'Usage')"
+        >
+          Usage
+        </button>
+      </div>
+      <div id="Overview" class="tabcontent" style="display: none">
+        <h2 class="text-xl font-semibold mb-2">Overview</h2>
+        <p class="mb-2">
+          This API provides character-based tokenization and decoding,
+          supporting ASCII, extended Latin, and special symbols. It also offers
+          mapping visualization and export features.
+        </p>
+        <div class="mb-2">
+          <span class="font-semibold">Base URL:</span>
+          <code class="bg-gray-100 px-2 py-1 rounded">
+            http://localhost:4000/api/v1/
+          </code>
+        </div>
+      </div>
+      <div id="Endpoints" class="tabcontent" style="display: none">
+        <h2 class="text-xl font-semibold mb-2">Endpoints</h2>
+        <div class="mb-4">
+          <h3 class="font-bold">1. Text to Token</h3>
+          <div class="mb-1">
+            <span class="font-semibold">POST</span>
+            <code class="bg-gray-100 px-2 py-1 rounded">/text-to-token</code>
+          </div>
+          <div class="mb-1">
+            Convert text input into an array of numerical tokens.
+          </div>
+          <div class="mb-1 font-semibold">Request:</div>
+          <pre class="bg-gray-100 p-2 rounded text-sm">
+{
+  "text": "Hello!"
+}</pre
+          >
+          <div class="mb-1 font-semibold">Response:</div>
+          <pre class="bg-gray-100 p-2 rounded text-sm">
+{
+  "tokens": [72, 101, 108, 108, 111, 33]
+}</pre
+          >
+          <div class="mb-1 font-semibold">Errors:</div>
+          <ul class="list-disc pl-6 mb-2">
+            <li>
+              <code>400</code>
+              : Invalid text input or unsupported character detected.
+            </li>
+          </ul>
+        </div>
+        <div class="mb-4">
+          <h3 class="font-bold">2. Token to Text</h3>
+          <div class="mb-1">
+            <span class="font-semibold">POST</span>
+            <code class="bg-gray-100 px-2 py-1 rounded">/token-to-text</code>
+          </div>
+          <div class="mb-1">
+            Convert an array of tokens back to readable text.
+          </div>
+          <div class="mb-1 font-semibold">Request:</div>
+          <pre class="bg-gray-100 p-2 rounded text-sm">
+{
+  "tokens": [72, 101, 108, 108, 111, 33]
+}</pre
+          >
+          <div class="mb-1 font-semibold">Response:</div>
+          <pre class="bg-gray-100 p-2 rounded text-sm">
+{
+  "text": "Hello!"
+}</pre
+          >
+          <div class="mb-1 font-semibold">Errors:</div>
+          <ul class="list-disc pl-6 mb-2">
+            <li>
+              <code>400</code>
+              : Invalid tokens input.
+            </li>
+          </ul>
+        </div>
+        <div class="mb-4">
+          <h3 class="font-bold">3. Character Mapping Viewer</h3>
+          <div class="mb-1">
+            <span class="font-semibold">GET</span>
+            <code class="bg-gray-100 px-2 py-1 rounded">/char-mapping</code>
+          </div>
+          <div class="mb-1">Returns the full character-to-token mapping.</div>
+          <div class="mb-1 font-semibold">Response:</div>
+          <pre class="bg-gray-100 p-2 rounded text-sm">
+{
+  "mapping": [
+    { "char": "A", "token": 65 },
+    { "char": "©", "token": 192 }
+    // ...
+  ]
+}</pre
+          >
+        </div>
+        <div class="mb-4">
+          <h3 class="font-bold">4. Export</h3>
+          <div class="mb-1">
+            <span class="font-semibold">POST</span>
+            <code class="bg-gray-100 px-2 py-1 rounded">/export</code>
+          </div>
+          <div class="mb-1">Export results in text or token format.</div>
+          <div class="mb-1 font-semibold">Request:</div>
+          <pre class="bg-gray-100 p-2 rounded text-sm">
+{
+  "type": "text", // or "tokens"
+  "data": "Hello!" // or [72, 101, 108, 108, 111, 33]
+}</pre
+          >
+          <div class="mb-1 font-semibold">Response:</div>
+          <div class="bg-gray-100 p-2 rounded text-sm mb-1">
+            Returns downloadable file (
+            <code>.txt</code>
+            for text,
+            <code>.json</code>
+            for tokens)
+          </div>
+          <div class="mb-1 font-semibold">Errors:</div>
+          <ul class="list-disc pl-6 mb-2">
+            <li>
+              <code>400</code>
+              : Invalid export type.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div id="Usage" class="tabcontent" style="display: none">
+        <h2 class="text-xl font-semibold mb-2">Usage & Details</h2>
+        <div class="mb-2 font-semibold">Error Handling</div>
+        <p class="mb-2">
+          All endpoints return JSON error messages with appropriate HTTP status
+          codes.
+        </p>
+        <div class="mb-2 font-semibold">Character Support</div>
+        <ul class="list-disc pl-6 mb-2">
+          <li>ASCII (0-127)</li>
+          <li>Extended Latin (e.g., À, ß, ü)</li>
+          <li>Special symbols (e.g., ©, ™, €, ₿)</li>
+        </ul>
+        <div class="mb-2 font-semibold">Example Usage</div>
+        <ul class="list-disc pl-6 mb-2">
+          <li>Convert text to tokens for NLP preprocessing.</li>
+          <li>Decode tokens for readable output.</li>
+          <li>Visualize and export character mappings for analysis.</li>
+        </ul>
+        <div class="mt-4 text-sm text-gray-600">
+          For further questions, contact the API maintainer.
+          <a
+            href="x.com/kissslayyy"
+            class="underline text-blue-500"
+            target="_blank"
+          >
+            @kislay
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
